@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>BasShows-Concet Time</title>
     <meta charset = "utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/foundation.min.css">
   </head>
 
     <body>
-      <h1 id="BasSows">BasShows</h1>
+      <h1 id="basshows">basShows</h1>
+<!--       <img src="/pictures/Largemouth600x530.jpg"/>
+ -->    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="#">Home</a></h1>
+        </li>
+        <li class="toggle-topbar"><a href="#"><span>Menu</span></a></li>
+      </ul>
+
+      <section class="top-bar-section">
+        <ul class="right">
+           <li class="has-dropdown">
+            <a href="#">Right Button Dropdown</a>
+            <ul class="dropdown">
+              <li><a href="#">First link in dropdown</a></li>
+              <li class="active"><a href="#">Active link in dropdown</a></li>
+            </ul>
+          </li>
+      </ul>
+
+      <ul class="left">
+        <li><input type="text" placeholder="Find Stuff"></li>
+      </ul>
+      </section>
+    </nav>
 
       <% @shows.each do |show| %>
-        <div class="show">
-          <h3><a href=<%= show["ticket_url"] %>><%= show["band"] %></h3></a>
+        <div class="show columns small-12 medium-4 text-center panel">
+          <h3 class="band_name"><a href=<%= show["ticket_url"] %>><%= show["band"] %></h3></a>
+          <h4 class="venue">Venue: <%= show["venue"] %></h4>
+          <p class="datetime">
+            <%= show["date"] + " " + show["time"] %>
+          </p>
         </div>
       <% end %>
     </body>

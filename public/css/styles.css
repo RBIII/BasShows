@@ -1,0 +1,13 @@
+body {
+  background-color: lightblue;
+}
+
+#basshows {
+  font-family: Tahoma, Geneva, sans-serif;
+  font-style: italic;
+  font-size: 400%;
+  border: 2px solid black;
+  width: 50%;
+  margin: 2% auto;
+  text-align: center;
+}
