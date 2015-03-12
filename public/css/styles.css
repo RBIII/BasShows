@@ -1,6 +1,5 @@
 body {
   background: url(/pictures/concert.jpg);
-  background-color: lightblue;
 }
 
 #basshows {
@@ -12,4 +11,9 @@ body {
   text-align: center;
   color: silver;
   background-color: black;
+}
+
+.search {
+  width: 240px;
+  height: 70px;
 }

@@ -20,9 +20,9 @@
            <li class="has-dropdown">
             <a href="#">Sort By</a>
             <ul class="dropdown">
-              <li class="active"><a href="/shows?order=<%= @sort_options[:date] %>">Date</a></li>
-              <li class="active"><a href="/shows?order=<%= @sort_options[:band] %>">Band</a></li>
-              <li class="active"><a href="/shows?order=<%= @sort_options[:venue] %>">Venue</a></li>
+              <li class="active"><a href="/search?search=<%= session["search"] %>&order=<%= @sort_options[:date] %>">Date</a></li>
+              <li class="active"><a href="/search?search=<%= session["search"] %>&order=<%= @sort_options[:band] %>">Band</a></li>
+              <li class="active"><a href="/search?search=<%= session["search"] %>&order=<%= @sort_options[:venue] %>">Venue</a></li>
             </ul>
           </li>
       </ul>

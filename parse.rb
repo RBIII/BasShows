@@ -3,9 +3,9 @@ require 'sinatra'
 require 'pg'
 require 'json'
 require 'pry'
+enable :sessions
 
 CONCERTS_PER_PAGE = 21
-
 
 def db_connection
   begin
@@ -104,8 +104,26 @@ get "/" do
 end
 
 get "/shows" do
+  session.delete("search")
+  session.delete("q")
   @curr_order = params[:order] || "date"
   @sort_options = sort_shows(params[:order])
-  @shows = get_shows.sort_by { |show| show[params[:order]]}
+  @shows = get_shows.sort_by { |show| show[params[:order]] }
+
   erb :shows
+end
+
+get "/search" do
+  session["search"] = params["search"]
+  sql = "select * from show where show.band like '%#{params["search"]}%' or show.venue like '%#{params["search"]}%';"
+  @curr_order = params[:order] || "date"
+  @sort_options = sort_shows(params[:order])
+  @shows = db_connection do |conn|
+    conn.exec(sql).to_a
+  end
+  unless @shows == nil
+    @shows = @shows.sort_by { |show| show[params[:order]] }
+  end
+
+  erb :search
 end
