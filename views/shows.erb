@@ -19,10 +19,11 @@
       <section class="top-bar-section">
         <ul class="right">
            <li class="has-dropdown">
-            <a href="#">Right Button Dropdown</a>
+            <a href="#">Sort By</a>
             <ul class="dropdown">
-              <li><a href="#">First link in dropdown</a></li>
-              <li class="active"><a href="#">Active link in dropdown</a></li>
+              <li class="active"><a href="/shows?order=<%= @sort_options[:date] %>">Date</a></li>
+              <li class="active"><a href="/shows?order=<%= @sort_options[:band] %>">Band</a></li>
+              <li class="active"><a href="/shows?order=<%= @sort_options[:venue] %>">Venue</a></li>
             </ul>
           </li>
       </ul>
@@ -36,7 +37,7 @@
       <% @shows.each do |show| %>
         <div class="show columns small-12 medium-4 text-center panel">
           <h3 class="band_name"><a href=<%= show["ticket_url"] %>><%= show["band"] %></h3></a>
-          <h4 class="venue">Venue: <%= show["venue"] %></h4>
+          <h4 class="venue"><%= show["venue"] %></h4>
           <p class="datetime">
             <%= show["date"] + " " + show["time"] %>
           </p>

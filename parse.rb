@@ -1,7 +1,11 @@
 require 'httparty'
 require 'sinatra'
 require 'pg'
+require 'json'
 require 'pry'
+
+CONCERTS_PER_PAGE = 21
+
 
 def db_connection
   begin
@@ -32,9 +36,7 @@ def read_shows
       end
     end
     counter += 1
-    puts counter
   end
-  binding.pry
   return shows
 end
 
@@ -63,13 +65,47 @@ def get_shows
   return shows.to_a
 end
 
+def sort_shows(sort)
+  options = {date: "date", band: "band", venue: "venue"}
+  sort ||= "date"
+
+  if sort == "date"
+    options[:date] = "r_date"
+  elsif sort == "r_date"
+    options[:date] = "date"
+  elsif sort == "band"
+    options[:band] = "r_band"
+  elsif sort == "r_band"
+    options[:band] = "band"
+  elsif sort == "venue"
+    options[:venue] = "r_venue"
+  elsif sort == "r_venue"
+    options[:sort] = "venue"
+  end
+
+  options
+end
+
+def concerts(page)
+  start_index = (page - 1) * TWEETS_PER_PAGE
+  all_tweets.slice(start_index, TWEETS_PER_PAGE) || []
+end
+
+def page(page_param)
+  if page_param && page_param.to_i >= 1
+    page_param.to_i
+  else
+    1
+  end
+end
+
 get "/" do
   redirect "/shows"
 end
 
 get "/shows" do
-  @shows = get_shows
+  @curr_order = params[:order] || "date"
+  @sort_options = sort_shows(params[:order])
+  @shows = get_shows.sort_by { |show| show[params[:order]]}
   erb :shows
 end
-
-add_all_shows
