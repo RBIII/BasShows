@@ -86,9 +86,17 @@ def sort_shows(sort)
   options
 end
 
-def concerts(page)
-  start_index = (page - 1) * TWEETS_PER_PAGE
-  all_tweets.slice(start_index, TWEETS_PER_PAGE) || []
+def delete_old
+  sql = "DELETE FROM show WHERE date < #{Time.now.strftime("%Y-%m-%d")}"
+
+  db_connection do |conn|
+    conn.exec(sql)
+  end
+end
+
+def concerts(page, shows)
+  start_index = (page - 1) * CONCERTS_PER_PAGE
+  shows.slice(start_index, CONCERTS_PER_PAGE) || []
 end
 
 def page(page_param)
@@ -108,14 +116,15 @@ get "/shows" do
   session.delete("q")
   @curr_order = params[:order] || "date"
   @sort_options = sort_shows(params[:order])
-  @shows = get_shows.sort_by { |show| show[params[:order]] }
+  @page = page(params[:page])
+  @shows = concerts(@page, get_shows.sort_by { |show| show[params[:order]] })
 
   erb :shows
 end
 
 get "/search" do
   session["search"] = params["search"]
-  sql = "select * from show where show.band like '%#{params["search"]}%' or show.venue like '%#{params["search"]}%';"
+  sql = "SELECT * FROM show WHERE LOWER(show.band) LIKE LOWER('%#{params["search"]}%') or LOWER(show.venue) LIKE LOWER('%#{params["search"]}%');"
   @curr_order = params[:order] || "date"
   @sort_options = sort_shows(params[:order])
   @shows = db_connection do |conn|
@@ -126,4 +135,10 @@ get "/search" do
   end
 
   erb :search
+end
+
+get "/shows.json" do
+  content_type :json
+
+  concerts(page(params[:page]), get_shows.sort_by { |show| show[params[:order]] }).to_json
 end

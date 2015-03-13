@@ -10,7 +10,7 @@
       <nav class="top-bar" data-topbar role="navigation">
       <ul class="title-area">
         <li class="name">
-          <h1><a href="http://localhost:4567/shows">Home</a></h1>
+          <h1><a href="/shows">Home</a></h1>
         </li>
         <li class="toggle-topbar"><a href="#"><span>Menu</span></a></li>
       </ul>
@@ -35,15 +35,18 @@
         </div>
       </section>
     </nav>
-
+    <div class="shows">
       <% @shows.each do |show| %>
         <div class="show columns small-12 medium-4 text-center panel">
-          <h3 class="band_name"><a href=<%= show["ticket_url"] %>><%= show["band"] %></h3></a>
+          <h3 class="band_name"><a class="ticket_url" href=<%= show["ticket_url"] %>><%= show["band"] %></h3></a>
           <h4 class="venue"><%= show["venue"] %></h4>
           <p class="datetime">
             <%= show["date"] + " " + show["time"] %>
           </p>
         </div>
       <% end %>
+    </div>
+      <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="/js/shows.js"></script>
     </body>
 </html>
